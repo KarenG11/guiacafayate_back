@@ -17,6 +17,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Servir archivos estáticos
+app.use(express.static('public'));
+
 // Puerto
 const PORT = process.env.PORT;
 
