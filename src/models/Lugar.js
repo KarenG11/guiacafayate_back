@@ -16,6 +16,11 @@ const lugarSchema = new mongoose.Schema({
     ref: 'Categoria',
     required: [true, 'La categoría es obligatoria']
   },
+  tipoCategoria: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TipoCategoria',
+    required: [true, 'El tipo es obligatorio']
+  },
   direccion: {
     type: String,
     required: [true, 'La dirección es obligatoria'],
@@ -48,17 +53,13 @@ const lugarSchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
-  logo: {
+  imagen: {
     type: String,
     trim: true
   },
-  ubicacion: {
-    type: String,
-    required: true
-  },
   redesSociales: {
     facebook: String,
-    instagram: String,
+    instagram: String
   },
   nivel: {
     type: String,
@@ -80,17 +81,10 @@ const lugarSchema = new mongoose.Schema({
   destacado: {
     type: Boolean,
     default: false
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
   }
 }, {
   timestamps: true
 });
-
-// Índice para búsquedas
-lugarSchema.index({ nombre: 'text', descripcion: 'text' });
 
 const Lugar = mongoose.model('Lugar', lugarSchema);
 

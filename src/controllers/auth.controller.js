@@ -1,10 +1,9 @@
-import User from '../models/User.js';
+﻿import User from '../models/User.js';
 import { generarJWT } from '../helpers/generarJWT.js';
-import { manejarErrorDB } from '../helpers/errorHandler.js';
 
 // @desc    Registrar nuevo usuario
 // @route   POST /api/auth/registro
-// @access  Público
+// @access  PÃºblico
 export const registro = async (req, res) => {
   try {
     const { nombre, email, password, rol } = req.body;
@@ -39,7 +38,7 @@ export const registro = async (req, res) => {
 
 // @desc    Login de usuario
 // @route   POST /api/auth/login
-// @access  Público
+// @access  PÃºblico
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -50,11 +49,11 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Credenciales inválidas'
+        message: 'Credenciales invÃ¡lidas'
       });
     }
 
-    // Verificar si el usuario está activo
+    // Verificar si el usuario estÃ¡ activo
     if (!user.activo) {
       return res.status(401).json({
         success: false,
@@ -62,13 +61,13 @@ export const login = async (req, res) => {
       });
     }
 
-    // Verificar contraseña
+    // Verificar contraseÃ±a
     const passwordCorrecta = await user.compararPassword(password);
 
     if (!passwordCorrecta) {
       return res.status(401).json({
         success: false,
-        message: 'Credenciales inválidas'
+        message: 'Credenciales invÃ¡lidas'
       });
     }
 
@@ -143,7 +142,7 @@ export const actualizarPerfil = async (req, res) => {
   }
 };
 
-// @desc    Cambiar contraseña
+// @desc    Cambiar contraseÃ±a
 // @route   PUT /api/auth/cambiar-password
 // @access  Privado
 export const cambiarPassword = async (req, res) => {
@@ -152,23 +151,23 @@ export const cambiarPassword = async (req, res) => {
 
     const user = await User.findById(req.user._id).select('+password');
 
-    // Verificar contraseña actual
+    // Verificar contraseÃ±a actual
     const passwordCorrecta = await user.compararPassword(passwordActual);
 
     if (!passwordCorrecta) {
       return res.status(401).json({
         success: false,
-        message: 'Contraseña actual incorrecta'
+        message: 'ContraseÃ±a actual incorrecta'
       });
     }
 
-    // Actualizar contraseña
+    // Actualizar contraseÃ±a
     user.password = passwordNuevo;
     await user.save();
 
     res.json({
       success: true,
-      message: 'Contraseña actualizada exitosamente'
+      message: 'ContraseÃ±a actualizada exitosamente'
     });
   } catch (error) {
     res.status(500).json({

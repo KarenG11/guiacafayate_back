@@ -1,6 +1,5 @@
 ﻿import Lugar from '../models/Lugar.js';
 import Categoria from '../models/Categoria.js';
-import { manejarErrorDB } from '../helpers/errorHandler.js';
 
 // @desc    Obtener todos los lugares
 // @route   GET /api/lugares
@@ -9,12 +8,12 @@ export const obtenerLugares = async (req, res) => {
   try {
 
     const lugares = await Lugar.find()
-      .populate('categoria', 'nombre descripcion icono')
-      .sort({ destacado: -1, nivel: -1, nombre: 1 });
+      .populate('categoria')
+      // .sort({ destacado: -1, nivel: -1, nombre: 1 });
+console.log(lugares);
 
     res.status(200).json({
       success: true,
-      count: lugares.length,
       data: lugares
     });
   } catch (error) {
@@ -32,8 +31,7 @@ export const obtenerLugares = async (req, res) => {
 export const obtenerLugarPorId = async (req, res) => {
   try {
     const lugar = await Lugar.findById(req.params.id)
-      .populate('categoria', 'nombre descripcion icono')
-      .populate('createdBy', 'nombre email');
+      .populate('categoria', 'nombre')
 
     if (!lugar) {
       return res.status(404).json({
@@ -47,8 +45,7 @@ export const obtenerLugarPorId = async (req, res) => {
       data: lugar
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };
 
@@ -57,25 +54,13 @@ export const obtenerLugarPorId = async (req, res) => {
 // @access  Privado/Admin
 export const crearLugar = async (req, res) => {
   try {
-    // Verificar que la categoría existe
-    const categoria = await Categoria.findById(req.body.categoria);
-
-    if (!categoria) {
-      return res.status(404).json({
-        success: false,
-        message: 'Categoría no encontrada'
-      });
-    }
 
     // Agregar el usuario que crea el lugar
-    req.body.createdBy = req.user._id;
-
     const lugar = await Lugar.create(req.body);
 
     // Obtener el lugar con las relaciones pobladas
     const lugarPoblado = await Lugar.findById(lugar._id)
-      .populate('categoria', 'nombre descripcion icono')
-      .populate('createdBy', 'nombre email');
+      .populate('categoria', 'nombre')
 
     res.status(201).json({
       success: true,
@@ -83,8 +68,7 @@ export const crearLugar = async (req, res) => {
       data: lugarPoblado
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };
 
@@ -113,8 +97,7 @@ export const actualizarLugar = async (req, res) => {
         runValidators: true
       }
     )
-      .populate('categoria', 'nombre descripcion icono')
-      .populate('createdBy', 'nombre email');
+      .populate('categoria', 'nombre')
 
     if (!lugar) {
       return res.status(404).json({
@@ -129,8 +112,7 @@ export const actualizarLugar = async (req, res) => {
       data: lugar
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };
 
@@ -154,8 +136,7 @@ export const eliminarLugar = async (req, res) => {
       data: {}
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };
 

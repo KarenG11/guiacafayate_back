@@ -9,11 +9,6 @@ import {
   obtenerSponsors
 } from '../controllers/lugar.controller.js';
 import { protegerRuta, esAdmin } from '../middlewares/auth.js';
-import {
-  validarCrearLugar,
-  validarActualizarLugar
-} from '../validations/lugar.validation.js';
-import { validarCampos } from '../middlewares/validar-campos.js';
 
 const router = express.Router();
 
@@ -21,29 +16,19 @@ const router = express.Router();
 router.get('/lugares/destacados/all', obtenerLugaresDestacados);
 router.get('/lugares/sponsors/oro', obtenerSponsors);
 
-// Rutas públicas
 router.get('/lugares', obtenerLugares);
-router.get('/lugares/:id', obtenerLugarPorId);
+router.get('/lugar/:id', obtenerLugarPorId);
 
-// Rutas privadas (solo admin)
 router.post(
-  '/lugares',
-  protegerRuta,
-  esAdmin,
-  validarCrearLugar,
-  validarCampos,
+  '/create-lugar',
   crearLugar
 );
 
 router.put(
-  '/lugares/:id',
-  protegerRuta,
-  esAdmin,
-  validarActualizarLugar,
-  validarCampos,
+  '/lugar/:id',
   actualizarLugar
 );
 
-router.delete('/lugares/:id', protegerRuta, esAdmin, eliminarLugar);
+router.delete('/lugar/:id', protegerRuta, esAdmin, eliminarLugar);
 
 export default router;

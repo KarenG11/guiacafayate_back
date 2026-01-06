@@ -1,5 +1,4 @@
 import Categoria from '../models/Categoria.js';
-import { manejarErrorDB } from '../helpers/errorHandler.js';
 
 // @desc    Obtener todas las categorías
 // @route   GET /api/categorias
@@ -48,8 +47,7 @@ export const obtenerCategoriaPorId = async (req, res) => {
       data: categoria
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };
 
@@ -66,8 +64,7 @@ export const crearCategoria = async (req, res) => {
       data: categoria
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };
 
@@ -98,8 +95,7 @@ export const actualizarCategoria = async (req, res) => {
       data: categoria
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };
 
@@ -123,7 +119,6 @@ export const eliminarCategoria = async (req, res) => {
       data: {}
     });
   } catch (error) {
-    const errorResponse = manejarErrorDB(error);
-    res.status(400).json(errorResponse);
+    res.status(400).json(error);
   }
 };

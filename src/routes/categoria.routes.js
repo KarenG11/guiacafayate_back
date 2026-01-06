@@ -7,37 +7,26 @@ import {
   eliminarCategoria 
 } from '../controllers/categoria.controller.js';
 import { protegerRuta, esAdmin } from '../middlewares/auth.js';
-import { 
-  validarCrearCategoria, 
-  validarActualizarCategoria 
-} from '../validations/categoria.validation.js';
+
 import { validarCampos } from '../middlewares/validar-campos.js';
 
 const router = express.Router();
 
 // Rutas públicas
-router.get('/', obtenerCategorias);
-router.get('/:id', obtenerCategoriaPorId);
+router.get('/categorias', obtenerCategorias);
+router.get('/categorias/:id', obtenerCategoriaPorId);
 
 // Rutas privadas (solo admin)
 router.post(
-  '/', 
-  protegerRuta, 
-  esAdmin, 
-  validarCrearCategoria, 
-  validarCampos, 
+  '/create-categoria', 
   crearCategoria
 );
 
 router.put(
-  '/:id', 
-  protegerRuta, 
-  esAdmin, 
-  validarActualizarCategoria, 
-  validarCampos, 
+  '/categoria/:id', 
   actualizarCategoria
 );
 
-router.delete('/:id', protegerRuta, esAdmin, eliminarCategoria);
+router.delete('/categoria/:id', protegerRuta, esAdmin, eliminarCategoria);
 
 export default router;

@@ -2,9 +2,9 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import connectDB from './src/config/database.js';
-import authRoutes from './src/routes/auth.routes.js';
 import categoriaRoutes from './src/routes/categoria.routes.js';
 import lugarRoutes from './src/routes/lugar.routes.js';
+import tipoCategoriaRoutes from './src/routes/tipoCategoria.routes.js';
 
 // Crear aplicación Express
 const app = express();
@@ -27,8 +27,8 @@ app.listen(PORT, () => {
 });
 
 // Rutas de la API
-app.use('/api/auth', authRoutes);
 app.use('/api', categoriaRoutes);
 app.use('/api', lugarRoutes);
+app.use('/api', tipoCategoriaRoutes);
 
 export default app;
